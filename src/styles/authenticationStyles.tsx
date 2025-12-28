@@ -1,0 +1,46 @@
+import { StyleSheet } from "react-native"
+
+export const authenticationStyles =StyleSheet.create({
+    container:
+    {
+        flex:1,
+        justifyContent:"center",
+        padding:20,
+        backgroundColor:"#f5f5f5"
+    },
+    title:
+    {
+        fontSize:28,
+        fontWeight:"bold",
+        marginBottom:30,
+        textAlign:"center",
+        color:"#333"
+    },
+    input:{
+        backgroundColor:"#fff",
+        paddingHorizontal:15,
+        paddingVertical:12,
+        borderRadius:10,
+        marginBottom:15,
+        borderWidth:1,
+        borderColor:"#ddd",
+        fontSize:16
+    },
+    button:{
+        backgroundColor:"#007AFF",
+        padding:15,
+        borderRadius:10,
+        alignItems:"center",
+        marginTop:10
+    },
+    buttonText:{
+        color:"#fff",
+        fontSize:18,
+        fontWeight:"bold"
+    },
+    linkText:{
+        marginTop:20,
+        color:"#007AFF",
+        textAlign:"center"
+    }
+})
