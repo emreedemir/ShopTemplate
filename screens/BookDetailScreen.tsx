@@ -3,12 +3,31 @@ import { ScrollView, StyleSheet, Image, View, Text, TouchableOpacity, Dimensions
 import { COLORS } from "../src/contants/colors";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/store';
+import { addItemToCartAsync } from '../store/slices/cartSlice';
+import { Alert } from 'react-native';
 const { width } = Dimensions.get('window');
 
 export const BookDetailScreen = ({ route }: any) => {
     const { book } = route.params;
     const navigation =useNavigation();
+
+    const dispatch =useDispatch<AppDispatch>();
+
+    const handleAddToCart =(id:string)=>{
+
+        dispatch(addItemToCartAsync(id))
+        .unwrap()
+        .then((res:any)=>{
+            Alert.alert("Başarılı Kitap Eklendi")
+        })
+        .catch(()=>
+        {
+            Alert.alert("Hata","Ürün sepete eklenmedi");
+        });
+    };
+
     return (
         <View style={styles.mainContainer}>
             <TouchableOpacity style={styles.backButton}
@@ -45,7 +64,8 @@ export const BookDetailScreen = ({ route }: any) => {
                     <Text style={styles.priceLabel}>Fiyat</Text>
                     <Text style={styles.priceText}>{book.price} TL</Text>
                 </View>
-                <TouchableOpacity style={styles.buyButton}>
+                <TouchableOpacity style={styles.buyButton} 
+                onPress={()=>handleAddToCart(book.id)}>
                     <Text style={styles.buyButtonText}>Sepete Ekle</Text>
                 </TouchableOpacity>
             </View>
