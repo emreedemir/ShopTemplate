@@ -1,17 +1,10 @@
-// src/navigation/TabNavigator.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; // Expo'nun hazır ikon paketi
-
-// Sayfalar
-import { HomeScreen } from '../screens/HomeScreen';
+import { HomeDrawerNavigator } from './HomeDrawerNavigator';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-
-// Sabitler
 import { COLORS } from "../src/contants/colors";
-
-
 import { STRINGS } from '../src/contants/strings';
 
 const Tab = createBottomTabNavigator();
@@ -43,7 +36,7 @@ export const TabNavigator = () => {
     >
       <Tab.Screen 
         name="HomeTab" 
-        component={HomeScreen} 
+        component={HomeDrawerNavigator} 
         options={{ title: STRINGS.titles.home }} 
       />
       <Tab.Screen 
