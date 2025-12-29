@@ -6,10 +6,18 @@ import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { COLORS } from "../src/contants/colors";
 import { STRINGS } from '../src/contants/strings';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { UseSelector } from 'react-redux';
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
+
+  const cartItems =useSelector((state:RootState)=>state.cart.items);
+
+
+  const cartCount =cartItems.length;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -44,7 +52,7 @@ export const TabNavigator = () => {
         component={CartScreen} 
         options={{ 
           title: STRINGS.titles.cart,
-          tabBarBadge: 0 
+          tabBarBadge: cartCount>0?cartCount:undefined
         }} 
       />
       <Tab.Screen 
