@@ -1,5 +1,5 @@
 import React, { useState } from "react"; // React importu TSX dosyaları için gereklidir
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
 import { authenticationStyles } from "../src/styles/authenticationStyles";
 
 interface ForgetPasswordProps {
@@ -9,6 +9,15 @@ interface ForgetPasswordProps {
 export const ForgetPassword = ({ onSwitch }: ForgetPasswordProps) => {
   const [email, setEmail] = useState<string>("");
 
+  const handleReset =async()=>
+    {
+      if(!email)
+        {
+          Alert.alert("Uyarı","Lütfen e posta adresinizi girin");
+          return;
+        }
+
+    };
   return (
     <View style={authenticationStyles.container}>
       <Text style={authenticationStyles.title}>Şifremi Unuttum</Text>
@@ -29,7 +38,7 @@ export const ForgetPassword = ({ onSwitch }: ForgetPasswordProps) => {
 
       <TouchableOpacity
         style={authenticationStyles.button}
-        onPress={() => console.log("Sıfırlama kodu gönderildi:", email)}
+        onPress={handleReset}
       >
         <Text style={authenticationStyles.buttonText}>Sıfırlama Linki Gönder</Text>
       </TouchableOpacity>

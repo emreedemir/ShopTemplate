@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, KeyboardAvoidingView, Platform, TextInput } from "react-native";
+import { Text, TouchableOpacity, KeyboardAvoidingView, Platform, TextInput, Alert } from "react-native";
 import { useDispatch } from "react-redux";
-import { login } from "../store/authSlice"; // Slice'ını buraya import et
 import { authenticationStyles } from "../src/styles/authenticationStyles";
+import { authService } from "../src/services/authService";
 
 interface SignInProps {
     onSwitch: () => void;
@@ -14,9 +14,17 @@ export const SignIn = ({ onSwitch, onForget }: SignInProps) => {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
 
-    const handleLogin = () => {
-        // Redux merkezi sistemine giriş emri gönderiyoruz
-        dispatch(login({ email, name: "Kullanıcı" })); 
+    const handleLogin = async() => {
+       
+        try
+        {
+            await authService.login(email,password);
+            Alert.alert("Giriş","Giriş Yapıldı");
+        }
+        catch(error:any)
+        {
+            Alert.alert("Giriş başarısız");
+        }
     };
 
     return (

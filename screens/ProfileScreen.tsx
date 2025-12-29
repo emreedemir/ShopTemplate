@@ -1,18 +1,26 @@
 import { useState } from "react";
-import { View ,Text,StyleSheet} from "react-native";
-
+import { View ,Text,StyleSheet,ActivityIndicator} from "react-native";
 import { AuthenticationScreen } from "./AuthenticationScreen";
 import { UserProfileScreen } from "./UserProfileScreen";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
+import { COLORS } from "../src/contants/colors";
+
 export default function ProfileScreen()
 {    
-    const isAuthenticated =useSelector((state:RootState)=>state.auth.isAuthenticated);
+    const {user,isInitiliazed} =useSelector((state:RootState)=>state.auth);
+
+    if(!isInitiliazed)
+        return(
+            <View style={[styles.container,styles.center]}>
+                <ActivityIndicator size="large" color={COLORS.primary}/>
+            </View>
+        );
 
     return(
         <View style={styles.container}>
-            {!isAuthenticated?<UserProfileScreen/>:<AuthenticationScreen/>}
+            {user?<UserProfileScreen/>:<AuthenticationScreen/>}
         </View>
     );
 }
@@ -20,6 +28,12 @@ export default function ProfileScreen()
 const styles =StyleSheet.create({
     container:
     {   
-        flex:1
+        flex:1,
+        backgroundColor:'#fff'
+    },
+    center:
+    {
+        justifyContent:'center',
+        alignItems:'center'
     }
 })
