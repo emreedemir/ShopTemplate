@@ -12,7 +12,7 @@ export default function ProfileScreen()
 
     return(
         <View style={styles.container}>
-            {isAuthenticated?<UserProfileScreen/>:<AuthenticationScreen/>}
+            {!isAuthenticated?<UserProfileScreen/>:<AuthenticationScreen/>}
         </View>
     );
 }
