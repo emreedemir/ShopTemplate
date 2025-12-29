@@ -8,6 +8,7 @@ import { STRINGS } from './src/contants/strings';
 import {COLORS} from './src/contants/colors';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { BookDetailScreen } from './screens/BookDetailScreen';
  
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,10 @@ export default function App() {
           component={TabNavigator} 
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name='BookDetail'
+          component={BookDetailScreen}
+          options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
