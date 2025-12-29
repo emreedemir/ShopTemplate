@@ -12,10 +12,8 @@ import { UseSelector } from 'react-redux';
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
-
+  
   const cartItems =useSelector((state:RootState)=>state.cart.items);
-
-
   const cartCount =cartItems.length;
 
   return (

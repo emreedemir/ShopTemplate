@@ -1,58 +1,75 @@
-import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { cartService } from "../../src/services/cartService";
 
-interface CartState
-{
-    items:any[];
-    totalAmount:number;
-    loading:boolean;
+interface CartItem {
+    id: string;
+    title: string;
+    price: number;
+    image: string;
+    author: string;
+    quantity: number;
 }
 
-const initialState:CartState={
-    items:[],
-    totalAmount:0,
-    loading:false
+interface CartState {
+    items: CartItem[];
+    totalAmount: number;
+}
+
+const initialState: CartState = {
+    items: [],
+    totalAmount: 0,
 };
 
-export const addItemToCartAsync =createAsyncThunk(
+export const addItemToCartAsync = createAsyncThunk(
     'cart/addItem',
-    async (bookId:string)=>{
-        const response =await cartService.addToCartRequest(bookId);
+    async (bookId: string) => {
+        const response = await cartService.addToCartRequest(bookId);
         return response;
     }
 );
 
+export const removeItemFromCartAsync = createAsyncThunk(
+    'cart/removeItem',
+    async (bookId: string) => {
+        const response = await cartService.removeFromCartRequest(bookId);
+        return response;
+    }
+);
 
-const cartSlice =createSlice({
-    name:'cart',
+const cartSlice = createSlice({
+    name: 'cart',
     initialState,
-    reducers:{
-        removeItem:(state,action)=>{
-            state.items=state.items.filter(item=>item.id !==action.payload);
-            state.totalAmount =state.items.reduce((sum,item)=>sum +item.price,0);
-        }
+    reducers: {
     },
-    extraReducers:(builder)=>{
+    extraReducers: (builder) => {
         builder
-        .addCase(addItemToCartAsync.pending,(state)=>{
-            state.loading=true;
-        })
-        .addCase(addItemToCartAsync.fulfilled,(state,action:any)=>{
-            state.loading=false;
-            state.items.push(action.payload);
-            state.totalAmount +=action.payload.price;
-        })
-        .addCase(addItemToCartAsync.rejected,(state)=>{
-            state.loading=false;
-        })
+            .addCase(addItemToCartAsync.fulfilled, (state, action: any) => {
+                const book = action.payload;
+                const existingItem = state.items.find(item => item.id === book.id);
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    state.items.push({ ...book, quantity: 1 });
+                }
+                state.totalAmount += book.price;
+            })
+            .addCase(removeItemFromCartAsync.fulfilled, (state, action) => {
+                const bookId = action.payload;
+                const index = state.items.findIndex(item => item.id === bookId);
+
+                if (index !== -1) {
+                    const item = state.items[index];
+
+                    if (item.quantity > 1) {
+                        item.quantity -= 1;
+                    } else {
+                        state.items.splice(index, 1);
+                    }
+                    state.totalAmount = Math.max(0, state.totalAmount - item.price);
+                }
+            });
     }
 });
 
-export const{removeItem}=cartSlice.actions;
 export default cartSlice.reducer;
-
-
-
-
-
