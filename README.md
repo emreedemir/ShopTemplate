@@ -42,8 +42,8 @@ To run this project locally, follow these steps:
 
 ### 1. Clone the repository
 ```bash
-git clone [https://github.com/your-username/kitap-dunyasi.git](https://github.com/your-username/kitap-dunyasi.git)
-cd kitap-dunyasi
+git clone [https://github.com/emreedemir/ShopTemplate.git](https://github.com/emreedemir/ShopTemplate.git)
+cd ShopTemplate
 2. Install Dependencies
 
 Bash
