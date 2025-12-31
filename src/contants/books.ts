@@ -1,6 +1,5 @@
-
-
-export const BOOKS = [
+/*export const BOOKS = [
+    // --- TARİH (16 Kitap) ---
     { id: '1', title: 'Roma İmparatorluğu', author: 'Edward Gibbon', price: 62.5, category: 'Tarih', image: 'https://picsum.photos/seed/book1/200/300' },
     { id: '2', title: 'Osmanlı Tarihi', author: 'Halil İnalcık', price: 80.0, category: 'Tarih', image: 'https://picsum.photos/seed/book2/200/300' },
     { id: '3', title: 'Sapiens', author: 'Yuval Noah Harari', price: 55.0, category: 'Tarih', image: 'https://picsum.photos/seed/book3/200/300' },
@@ -9,7 +8,16 @@ export const BOOKS = [
     { id: '6', title: 'İlber Ortaylı - Seyahatname', author: 'İlber Ortaylı', price: 35.0, category: 'Tarih', image: 'https://picsum.photos/seed/book6/200/300' },
     { id: '7', title: 'Mitologya', author: 'Edith Hamilton', price: 29.0, category: 'Tarih', image: 'https://picsum.photos/seed/book7/200/300' },
     { id: '8', title: 'Cumhuriyetin İlk Yüzyılı', author: 'İlber Ortaylı', price: 52.0, category: 'Tarih', image: 'https://picsum.photos/seed/book8/200/300' },
-  
+    { id: '41', title: 'Kısa Türkiye Tarihi', author: 'Sina Akşin', price: 38.0, category: 'Tarih', image: 'https://picsum.photos/seed/book41/200/300' },
+    { id: '42', title: 'Ortadoğu', author: 'Bernard Lewis', price: 65.0, category: 'Tarih', image: 'https://picsum.photos/seed/book42/200/300' },
+    { id: '43', title: 'Türklerin Tarihi', author: 'İlber Ortaylı', price: 45.0, category: 'Tarih', image: 'https://picsum.photos/seed/book43/200/300' },
+    { id: '44', title: 'Uygarlıkların Batışı', author: 'Amin Maalouf', price: 42.0, category: 'Tarih', image: 'https://picsum.photos/seed/book44/200/300' },
+    { id: '45', title: 'Tüfek, Mikrop ve Çelik', author: 'Jared Diamond', price: 58.0, category: 'Tarih', image: 'https://picsum.photos/seed/book45/200/300' },
+    { id: '46', title: 'İpek Yolu', author: 'Peter Frankopan', price: 72.0, category: 'Tarih', image: 'https://picsum.photos/seed/book46/200/300' },
+    { id: '47', title: 'Atatürk', author: 'Andrew Mango', price: 85.0, category: 'Tarih', image: 'https://picsum.photos/seed/book47/200/300' },
+    { id: '48', title: 'Haçlı Seferleri', author: 'Amin Maalouf', price: 39.0, category: 'Tarih', image: 'https://picsum.photos/seed/book48/200/300' },
+
+    // --- MACERA (16 Kitap) ---
     { id: '9', title: 'Büyük Umutlar', author: 'Charles Dickens', price: 45.9, category: 'Macera', image: 'https://picsum.photos/seed/book9/200/300' },
     { id: '10', title: 'Sherlock Holmes', author: 'Arthur Conan Doyle', price: 35.0, category: 'Macera', image: 'https://picsum.photos/seed/book10/200/300' },
     { id: '11', title: 'Define Adası', author: 'R.L. Stevenson', price: 25.0, category: 'Macera', image: 'https://picsum.photos/seed/book11/200/300' },
@@ -18,8 +26,16 @@ export const BOOKS = [
     { id: '14', title: 'Beyaz Diş', author: 'Jack London', price: 30.0, category: 'Macera', image: 'https://picsum.photos/seed/book14/200/300' },
     { id: '15', title: 'Kayıp Dünya', author: 'Arthur Conan Doyle', price: 34.0, category: 'Macera', image: 'https://picsum.photos/seed/book15/200/300' },
     { id: '16', title: 'Moby Dick', author: 'Herman Melville', price: 42.0, category: 'Macera', image: 'https://picsum.photos/seed/book16/200/300' },
-  
+    { id: '49', title: 'Yüzüklerin Efendisi', author: 'J.R.R. Tolkien', price: 95.0, category: 'Macera', image: 'https://picsum.photos/seed/book49/200/300' },
+    { id: '50', title: 'Hobbit', author: 'J.R.R. Tolkien', price: 45.0, category: 'Macera', image: 'https://picsum.photos/seed/book50/200/300' },
+    { id: '51', title: 'Harry Potter 1', author: 'J.K. Rowling', price: 55.0, category: 'Macera', image: 'https://picsum.photos/seed/book51/200/300' },
+    { id: '52', title: 'Monte Kristo Kontu', author: 'Alexandre Dumas', price: 88.0, category: 'Macera', image: 'https://picsum.photos/seed/book52/200/300' },
+    { id: '53', title: 'Üç Silahşörler', author: 'Alexandre Dumas', price: 42.0, category: 'Macera', image: 'https://picsum.photos/seed/book53/200/300' },
+    { id: '54', title: 'Arsen Lüpen', author: 'Maurice Leblanc', price: 29.0, category: 'Macera', image: 'https://picsum.photos/seed/book54/200/300' },
+    { id: '55', title: 'Dünyanın Merkezine Yolculuk', author: 'Jules Verne', price: 31.0, category: 'Macera', image: 'https://picsum.photos/seed/book55/200/300' },
+    { id: '56', title: 'Karanlığın Yüreği', author: 'Joseph Conrad', price: 24.0, category: 'Macera', image: 'https://picsum.photos/seed/book56/200/300' },
 
+    // --- BİLİM KURGU (16 Kitap) ---
     { id: '17', title: 'Vakıf', author: 'Isaac Asimov', price: 58.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book17/200/300' },
     { id: '18', title: 'Dune', author: 'Frank Herbert', price: 65.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book18/200/300' },
     { id: '19', title: '1984', author: 'George Orwell', price: 38.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book19/200/300' },
@@ -28,7 +44,16 @@ export const BOOKS = [
     { id: '22', title: 'Fahrenheit 451', author: 'Ray Bradbury', price: 33.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book22/200/300' },
     { id: '23', title: 'Ben, Robot', author: 'Isaac Asimov', price: 37.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book23/200/300' },
     { id: '24', title: 'Zaman Makinesi', author: 'H.G. Wells', price: 26.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book24/200/300' },
-  
+    { id: '57', title: 'Yıldız Gemisi Askerleri', author: 'Robert A. Heinlein', price: 48.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book57/200/300' },
+    { id: '58', title: 'Androidler Elektrikli Koyun Düşler mi?', author: 'Philip K. Dick', price: 39.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book58/200/300' },
+    { id: '59', title: 'Neuromancer', author: 'William Gibson', price: 46.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book59/200/300' },
+    { id: '60', title: 'Otostopçunun Galaksi Rehberi', author: 'Douglas Adams', price: 35.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book60/200/300' },
+    { id: '61', title: 'Biz', author: 'Yevgeni Zamyatin', price: 32.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book61/200/300' },
+    { id: '62', title: 'Dünyalar Savaşı', author: 'H.G. Wells', price: 28.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book62/200/300' },
+    { id: '63', title: 'Solaris', author: 'Stanislaw Lem', price: 41.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book63/200/300' },
+    { id: '64', title: 'Mülksüzler', author: 'Ursula K. Le Guin', price: 44.0, category: 'Bilim Kurgu', image: 'https://picsum.photos/seed/book64/200/300' },
+
+    // --- KLASİK (16 Kitap) ---
     { id: '25', title: 'Suç ve Ceza', author: 'Dostoyevski', price: 49.0, category: 'Klasik', image: 'https://picsum.photos/seed/book25/200/300' },
     { id: '26', title: 'Sefiller', author: 'Victor Hugo', price: 75.0, category: 'Klasik', image: 'https://picsum.photos/seed/book26/200/300' },
     { id: '27', title: 'Gurur ve Önyargı', author: 'Jane Austen', price: 39.0, category: 'Klasik', image: 'https://picsum.photos/seed/book27/200/300' },
@@ -37,7 +62,16 @@ export const BOOKS = [
     { id: '30', title: 'Madam Bovary', author: 'Gustave Flaubert', price: 34.0, category: 'Klasik', image: 'https://picsum.photos/seed/book30/200/300' },
     { id: '31', title: 'Dönüşüm', author: 'Franz Kafka', price: 20.0, category: 'Klasik', image: 'https://picsum.photos/seed/book31/200/300' },
     { id: '32', title: 'Satranç', author: 'Stefan Zweig', price: 18.0, category: 'Klasik', image: 'https://picsum.photos/seed/book32/200/300' },
-  
+    { id: '65', title: 'İlahi Komedya', author: 'Dante', price: 55.0, category: 'Klasik', image: 'https://picsum.photos/seed/book65/200/300' },
+    { id: '66', title: 'Faust', author: 'Goethe', price: 48.0, category: 'Klasik', image: 'https://picsum.photos/seed/book66/200/300' },
+    { id: '67', title: 'Babalar ve Oğullar', author: 'Turgenyev', price: 36.0, category: 'Klasik', image: 'https://picsum.photos/seed/book67/200/300' },
+    { id: '68', title: 'Ölü Canlar', author: 'Gogol', price: 42.0, category: 'Klasik', image: 'https://picsum.photos/seed/book68/200/300' },
+    { id: '69', title: 'Don Kişot', author: 'Cervantes', price: 82.0, category: 'Klasik', image: 'https://picsum.photos/seed/book69/200/300' },
+    { id: '70', title: 'Yabancı', author: 'Albert Camus', price: 25.0, category: 'Klasik', image: 'https://picsum.photos/seed/book70/200/300' },
+    { id: '71', title: 'Denemeler', author: 'Montaigne', price: 44.0, category: 'Klasik', image: 'https://picsum.photos/seed/book71/200/300' },
+    { id: '72', title: 'Hamlet', author: 'Shakespeare', price: 22.0, category: 'Klasik', image: 'https://picsum.photos/seed/book72/200/300' },
+
+    // --- GELİŞİM (16 Kitap) ---
     { id: '33', title: 'Atomik Alışkanlıklar', author: 'James Clear', price: 56.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book33/200/300' },
     { id: '34', title: 'Düşün ve Zengin Ol', author: 'Napoleon Hill', price: 42.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book34/200/300' },
     { id: '35', title: 'Etkili İnsanların 7 Alışkanlığı', author: 'Stephen Covey', price: 59.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book35/200/300' },
@@ -46,4 +80,12 @@ export const BOOKS = [
     { id: '38', title: 'İrade Terbiyesi', author: 'Jules Payot', price: 31.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book38/200/300' },
     { id: '39', title: 'Akış', author: 'Mihaly Csikszentmihalyi', price: 47.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book39/200/300' },
     { id: '40', title: 'Beni Ödülle Cezalandırma', author: 'Özgür Bolat', price: 36.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book40/200/300' },
-  ];
+    { id: '73', title: 'Dost Kazanma ve İnsanları Etkileme Sanatı', author: 'Dale Carnegie', price: 44.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book73/200/300' },
+    { id: '74', title: 'Zengin Baba Yoksul Baba', author: 'Robert Kiyosaki', price: 52.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book74/200/300' },
+    { id: '75', title: 'Sabah Mucizesi', author: 'Hal Elrod', price: 34.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book75/200/300' },
+    { id: '76', title: 'İnsan Mühendisliği', author: 'Nüvit Osmay', price: 48.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book76/200/300' },
+    { id: '77', title: 'Derin Çalışma', author: 'Cal Newport', price: 45.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book77/200/300' },
+    { id: '78', title: 'Pürdikkat', author: 'Cal Newport', price: 40.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book78/200/300' },
+    { id: '79', title: 'Varolmanın Gücü', author: 'Eckhart Tolle', price: 38.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book79/200/300' },
+    { id: '80', title: 'Dört Anlaşma', author: 'Don Miguel Ruiz', price: 28.0, category: 'Gelişim', image: 'https://picsum.photos/seed/book80/200/300' },
+];*/

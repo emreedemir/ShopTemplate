@@ -12,8 +12,8 @@ import { BookDetailScreen } from './screens/BookDetailScreen';
 import { authService } from './src/services/authService';
 import { setUser } from './store/authSlice';
 import RootContent from './RootContent';
- 
-const Stack = createNativeStackNavigator();
+
+ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
