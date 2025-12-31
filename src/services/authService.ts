@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut,updateEmail,updatePassword ,EmailAuthProvider,reauthenticateWithCredential,deleteUser} from "firebase/auth";
 import { auth ,db} from "./firebase";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc,arrayRemove ,deleteDoc} from "firebase/firestore";
-import { User as FirebaseUser } from "firebase/auth";
+import { User as FirebaseUser ,sendPasswordResetEmail} from "firebase/auth";
 
 class AuthService
 {
@@ -19,6 +19,7 @@ class AuthService
         await deleteUser(user);
     }
 
+
     async updateEmail(newEmail:string)
     {
         if(auth.currentUser)await updateEmail(auth.currentUser,newEmail);
@@ -28,6 +29,19 @@ class AuthService
 
         if(auth.currentUser)await updatePassword(auth.currentUser,newPassword);
     }
+
+    async resetPassword(email:string)
+    {
+        try
+        {
+            await  sendPasswordResetEmail(auth,email)
+        }
+        catch(error)
+        {
+            console.error(error);
+        }
+    };
+
 
     async updateUserName(uid:string,newName:string){
         const userDocRef =doc(db,"users",uid);

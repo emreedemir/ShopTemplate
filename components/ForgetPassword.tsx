@@ -1,52 +1,43 @@
-import React, { useState } from "react"; // React importu TSX dosyaları için gereklidir
+import React, { useState } from "react"; 
 import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
 import { authenticationStyles } from "../src/styles/authenticationStyles";
+import { authService } from "../src/services/authService";
+import { Ionicons } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native";
+import{COLORS} from '../src/contants/colors';
 
 interface ForgetPasswordProps {
   onSwitch: () => void;
 }
 
-export const ForgetPassword = ({ onSwitch }: ForgetPasswordProps) => {
-  const [email, setEmail] = useState<string>("");
+export const ForgetPassword = ({ onSwitch }: { onSwitch: () => void }) => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleReset =async()=>
-    {
-      if(!email)
-        {
-          Alert.alert("Uyarı","Lütfen e posta adresinizi girin");
-          return;
-        }
+  const handleReset = async () => {
+      if (!email) return Alert.alert("Uyarı", "Lütfen e-posta adresinizi girin.");
+      setLoading(true);
+      try {
+          await authService.resetPassword(email);
+          Alert.alert("Bilgi", "Şifre sıfırlama linki e-postanıza gönderildi.");
+          onSwitch(); 
+      } catch (err: any) {
+          Alert.alert("Hata", "Sıfırlama isteği gönderilemedi.");
+      } finally { setLoading(false); }
+  };
 
-    };
   return (
-    <View style={authenticationStyles.container}>
-      <Text style={authenticationStyles.title}>Şifremi Unuttum</Text>
-      
-      {/* Yazı rengi ve hizalaması için küçük bir inline stil veya stil dosyanızdan bir ekleme */}
-      <Text style={{ textAlign: 'center', marginBottom: 20, color: '#666' }}>
-        Şifrenizi sıfırlamak için kayıtlı e-posta adresinizi giriniz.
-      </Text>
-
-      <TextInput
-        style={authenticationStyles.input}
-        placeholder="E-Posta Adresiniz"
-        value={email}
-        onChangeText={(val: string) => setEmail(val)}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-
-      <TouchableOpacity
-        style={authenticationStyles.button}
-        onPress={handleReset}
-      >
-        <Text style={authenticationStyles.buttonText}>Sıfırlama Linki Gönder</Text>
-      </TouchableOpacity>
-
-      {/* DÜZELTME: onSwitch fonksiyonu buradaki onPress'e bağlandı */}
-      <TouchableOpacity onPress={onSwitch} style={{ marginTop: 20 }}>
-        <Text style={authenticationStyles.linkText}>Giriş Ekranına Dön</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={authenticationStyles.container}>
+          <Ionicons name="lock-open-outline" size={60} color={COLORS.primary} style={authenticationStyles.infoIcon} />
+          <Text style={authenticationStyles.title}>Şifreni Sıfırla</Text>
+          <Text style={authenticationStyles.subtitle}>Sana bir sıfırlama linki gönderebilmemiz için e-posta adresini gir.</Text>
+          <TextInput style={authenticationStyles.input} placeholder="E-Posta Adresiniz" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+          <TouchableOpacity style={authenticationStyles.button} onPress={handleReset} disabled={loading}>
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={authenticationStyles.buttonText}>Linki Gönder</Text>}
+          </TouchableOpacity>
+          <TouchableOpacity style={authenticationStyles.linkContainer} onPress={onSwitch}>
+              <Text style={authenticationStyles.linkText}>Geri Dön ve <Text style={authenticationStyles.linkAction}>Giriş Yap</Text></Text>
+          </TouchableOpacity>
+      </View>
   );
 };
