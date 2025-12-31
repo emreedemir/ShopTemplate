@@ -17,7 +17,7 @@ export const BookCard = ({ item ,onPress,onAddToCart}: BookCardProps) => {
         <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
         <Text style={styles.author} numberOfLines={1}>{item.author}</Text>
         <View style={styles.footer}>
-            <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.price}>{item.price} TL</Text>
             <TouchableOpacity style={styles.addButton}
             onPress={onAddToCart}>
                 <Ionicons name="cart-outline" size={20} color="#fff"/>

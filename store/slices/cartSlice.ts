@@ -19,7 +19,6 @@ const initialState: CartState = {
     items: [],
     totalAmount: 0,
 };
-
 export const addItemToCartAsync = createAsyncThunk(
     'cart/addItem',
     async (bookId: string) => {
@@ -40,6 +39,10 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+        clearCart: (state) => {
+            state.items = [];
+            state.totalAmount = 0;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -52,9 +55,10 @@ const cartSlice = createSlice({
                 } else {
                     state.items.push({ ...book, quantity: 1 });
                 }
-                state.totalAmount += book.price;
+            
+                state.totalAmount = Number((state.totalAmount + book.price).toFixed(2));
             })
-            .addCase(removeItemFromCartAsync.fulfilled, (state, action) => {
+            .addCase(removeItemFromCartAsync.fulfilled, (state, action: any) => {
                 const bookId = action.payload;
                 const index = state.items.findIndex(item => item.id === bookId);
 
@@ -66,10 +70,14 @@ const cartSlice = createSlice({
                     } else {
                         state.items.splice(index, 1);
                     }
-                    state.totalAmount = Math.max(0, state.totalAmount - item.price);
+                
+                    const newTotal = state.totalAmount - item.price;
+                    state.totalAmount = newTotal > 0 ? Number(newTotal.toFixed(2)) : 0;
                 }
             });
     }
 });
+
+export const { clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

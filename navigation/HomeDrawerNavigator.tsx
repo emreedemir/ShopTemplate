@@ -18,7 +18,7 @@ export const HomeDrawerNavigator = () => {
       }}
     >
         <Drawer.Screen
-            name='MainHome'
+            name='Home'
             component={HomeScreen}
             options={{title:'Ana Sayfa'}}
         />

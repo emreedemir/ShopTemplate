@@ -8,13 +8,14 @@ import {
     ScrollView,
     Image,
     Alert,
-    SafeAreaView
+    SafeAreaView,
+    ActivityIndicator
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../src/contants/colors";
-import { addItemToCartAsync, removeItemFromCartAsync } from "../store/slices/cartSlice";
+import { addItemToCartAsync, removeItemFromCartAsync, clearCart } from "../store/slices/cartSlice"; 
 import { useNavigation } from '@react-navigation/native';
 import { authService } from '../src/services/authService';
 import { setUser } from '../store/authSlice';
@@ -27,10 +28,9 @@ export default function CartScreen() {
     const { items, totalAmount } = useSelector((state: RootState) => state.cart);
     const { user } = useSelector((state: RootState) => state.auth);
 
-
     const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
     const [selectedCardIndex, setSelectedCardIndex] = useState(0);
-
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const [isSheetVisible, setIsSheetVisible] = useState(false);
     const [sheetType, setSheetType] = useState<'address' | 'card'>('address');
@@ -45,6 +45,7 @@ export default function CartScreen() {
             }
             const updatedData = await authService.getUserData(user.uid);
             dispatch(setUser(updatedData));
+            setIsSheetVisible(false);
         } catch (error) {
             Alert.alert("Hata", "Bilgiler kaydedilemedi.");
         }
@@ -67,10 +68,23 @@ export default function CartScreen() {
         }
 
         try {
+            setIsProcessing(true);
+        
             await authService.processPurchase(user.uid, items, totalAmount);
-            Alert.alert("Başarılı!", "Siparişiniz alındı. Keyifli okumalar!");
+        
+            dispatch(clearCart());
+            const updatedUserData = await authService.getUserData(user.uid);
+            dispatch(setUser(updatedUserData));
+
+            Alert.alert(
+                "Başarılı!", 
+                "Siparişiniz alındı. Keyifli okumalar!",
+                [{ text: "Tamam", onPress: () => navigation.navigate("HomeTab",{screen:"Home"}) }]
+            );
         } catch (error) {
             Alert.alert("Hata", "Ödeme işlemi sırasında bir hata oluştu.");
+        } finally {
+            setIsProcessing(false);
         }
     };
 
@@ -79,7 +93,7 @@ export default function CartScreen() {
             <Image source={{ uri: item.image }} style={styles.cartImage} />
             <View style={styles.cartInfo}>
                 <Text style={styles.cartTitle} numberOfLines={1}>{item.title}</Text>
-                <Text style={styles.cartPrice}>{item.price} TL</Text>
+                <Text style={styles.cartPrice}>{Number(item.price).toFixed(2)} TL</Text>
             </View>
             <View style={styles.actionContainer}>
                 <TouchableOpacity onPress={() => dispatch(removeItemFromCartAsync(item.id))} style={styles.smallButton}>
@@ -106,7 +120,7 @@ export default function CartScreen() {
                 />
             </View>
 
-            <View style={[styles.footerSection, !user && { flex: 0.5 }]}>
+            <View style={[styles.footerSection, !user && { flex: 0.6 }]}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {user ? (
                         <>
@@ -126,6 +140,7 @@ export default function CartScreen() {
                                     <Ionicons name="add" size={20} color={COLORS.primary} />
                                 </TouchableOpacity>
                             </ScrollView>
+
                             <Text style={styles.subTitleText}>Ödeme Kartı Seçin</Text>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
                                 {user.cards?.map((card: string, index: number) => (
@@ -142,9 +157,10 @@ export default function CartScreen() {
                                     <Ionicons name="add" size={20} color={COLORS.primary} />
                                 </TouchableOpacity>
                             </ScrollView>
+
                             <View style={styles.infoNoteBox}>
                                 <Ionicons name="information-circle-outline" size={16} color="#888" />
-                                <Text style={styles.infoNoteText}>Kitap alışverişlerinde taksit yapılamamaktadır. Tek çekim uygulanır.</Text>
+                                <Text style={styles.infoNoteText}>Ürünler adresinize en geç 3 iş günü içinde kargolanacaktır.</Text>
                             </View>
                         </>
                     ) : (
@@ -163,12 +179,17 @@ export default function CartScreen() {
                 </ScrollView>
 
                 <TouchableOpacity 
-                    style={[styles.checkoutButton, !user && { backgroundColor: '#576574' }]} 
+                    style={[styles.checkoutButton, (!user || items.length === 0) && { backgroundColor: '#bdc3c7' }]} 
                     onPress={handleCheckout}
+                    disabled={isProcessing}
                 >
-                    <Text style={styles.checkoutButtonText}>
-                        {user ? "Satın Almayı Tamamla" : "Tamamlamak İçin Giriş Yapın"}
-                    </Text>
+                    {isProcessing ? (
+                        <ActivityIndicator color="#fff" />
+                    ) : (
+                        <Text style={styles.checkoutButtonText}>
+                            {user ? "Satın Almayı Tamamla" : "Tamamlamak İçin Giriş Yapın"}
+                        </Text>
+                    )}
                 </TouchableOpacity>
             </View>
 
@@ -186,39 +207,43 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#F0F2F5' },
     listSection: { flex: 1, padding: 15 },
     footerSection: { 
-        flex: 1.6, 
+        flex: 1.8, 
         backgroundColor: '#fff', 
-        borderTopLeftRadius: 30, 
-        borderTopRightRadius: 30, 
-        padding: 20, 
-        elevation: 20 
+        borderTopLeftRadius: 35, 
+        borderTopRightRadius: 35, 
+        padding: 25, 
+        elevation: 25,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10
     },
-    sectionHeader: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
-    cartCard: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, padding: 10, marginBottom: 10, alignItems: 'center', elevation: 2 },
-    cartImage: { width: 40, height: 60, borderRadius: 4 },
-    cartInfo: { flex: 1, marginLeft: 12 },
-    cartTitle: { fontWeight: 'bold', fontSize: 14 },
-    cartPrice: { color: COLORS.primary, fontWeight: 'bold', marginTop: 2 },
-    actionContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F9FA', borderRadius: 8, padding: 4 },
-    itemCountText: { marginHorizontal: 8, fontWeight: 'bold' },
-    smallButton: { padding: 4 },
-    subTitleText: { fontSize: 15, fontWeight: '700', marginTop: 15, marginBottom: 8, color: '#333' },
-    horizontalScroll: { marginBottom: 5 },
-    addressCard: { width: 140, height: 75, backgroundColor: '#F8F9FA', borderRadius: 12, padding: 10, marginRight: 10, borderWidth: 1, borderColor: '#EEE', justifyContent: 'space-between' },
-    cardMini: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F9FA', borderRadius: 12, padding: 12, marginRight: 10, borderWidth: 1, borderColor: '#EEE', minWidth: 120 },
-    selectedBorder: { borderColor: COLORS.primary, borderWidth: 1.5, backgroundColor: '#F0F7FF' },
-    addressCardText: { fontSize: 11, color: '#666' },
-    cardMiniText: { marginLeft: 8, fontWeight: '600', fontSize: 13 },
-    addSmallButton: { width: 45, height: 75, backgroundColor: '#FFF', borderRadius: 12, justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed', borderWidth: 1, borderColor: '#ccc' },
-    infoNoteBox: { flexDirection: 'row', backgroundColor: '#F1F2F6', padding: 10, borderRadius: 10, alignItems: 'center', marginTop: 15 },
-    infoNoteText: { fontSize: 10, color: '#777', marginLeft: 6, flex: 1 },
-    summaryBox: { marginTop: 20, padding: 15, borderTopWidth: 1, borderColor: '#EEE' },
+    sectionHeader: { fontSize: 22, fontWeight: 'bold', marginBottom: 15, color: '#1a1a1a' },
+    cartCard: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 15, padding: 12, marginBottom: 12, alignItems: 'center', elevation: 3, shadowColor: '#000', shadowOpacity: 0.05 },
+    cartImage: { width: 50, height: 75, borderRadius: 6 },
+    cartInfo: { flex: 1, marginLeft: 15 },
+    cartTitle: { fontWeight: 'bold', fontSize: 15, color: '#2d3436' },
+    cartPrice: { color: COLORS.primary, fontWeight: '800', marginTop: 4, fontSize: 16 },
+    actionContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F1F2F6', borderRadius: 10, padding: 6 },
+    itemCountText: { marginHorizontal: 12, fontWeight: 'bold', fontSize: 16 },
+    smallButton: { padding: 5 },
+    subTitleText: { fontSize: 16, fontWeight: '700', marginTop: 18, marginBottom: 10, color: '#2c3e50' },
+    horizontalScroll: { marginBottom: 10 },
+    addressCard: { width: 160, height: 85, backgroundColor: '#F8F9FA', borderRadius: 15, padding: 12, marginRight: 12, borderWidth: 1, borderColor: '#EEE', justifyContent: 'space-between' },
+    cardMini: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F9FA', borderRadius: 15, padding: 15, marginRight: 12, borderWidth: 1, borderColor: '#EEE', minWidth: 140 },
+    selectedBorder: { borderColor: COLORS.primary, borderWidth: 2, backgroundColor: '#F0F7FF' },
+    addressCardText: { fontSize: 12, color: '#636e72', lineHeight: 16 },
+    cardMiniText: { marginLeft: 10, fontWeight: '600', fontSize: 14, color: '#2d3436' },
+    addSmallButton: { width: 50, height: 85, backgroundColor: '#FFF', borderRadius: 15, justifyContent: 'center', alignItems: 'center', borderStyle: 'dashed', borderWidth: 1.5, borderColor: '#d1d1d1' },
+    infoNoteBox: { flexDirection: 'row', backgroundColor: '#F1F2F6', padding: 12, borderRadius: 12, alignItems: 'center', marginTop: 20 },
+    infoNoteText: { fontSize: 11, color: '#7f8c8d', marginLeft: 8, flex: 1 },
+    summaryBox: { marginTop: 25, paddingVertical: 15, borderTopWidth: 1, borderColor: '#F1F2F6' },
     summaryRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    totalLabel: { fontSize: 18, fontWeight: 'bold' },
-    totalValue: { fontSize: 18, fontWeight: 'bold', color: '#27ae60' },
-    checkoutButton: { backgroundColor: COLORS.primary, padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 10 },
-    checkoutButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-    guestBanner: { alignItems: 'center', padding: 20 },
-    guestText: { textAlign: 'center', color: '#888', marginTop: 10, fontSize: 13 },
-    emptyText: { textAlign: 'center', marginTop: 40, color: '#999' }
+    totalLabel: { fontSize: 20, fontWeight: 'bold', color: '#2d3436' },
+    totalValue: { fontSize: 22, fontWeight: '900', color: '#27ae60' },
+    checkoutButton: { backgroundColor: COLORS.primary, padding: 18, borderRadius: 15, alignItems: 'center', marginTop: 10, elevation: 5 },
+    checkoutButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
+    guestBanner: { alignItems: 'center', paddingVertical: 30 },
+    guestText: { textAlign: 'center', color: '#7f8c8d', marginTop: 12, fontSize: 14, paddingHorizontal: 20 },
+    emptyText: { textAlign: 'center', marginTop: 50, color: '#b2bec3', fontSize: 16, fontStyle: 'italic' }
 });
