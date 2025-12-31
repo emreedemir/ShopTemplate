@@ -43,13 +43,13 @@ export const TabNavigator = () => {
       <Tab.Screen 
         name="HomeTab" 
         component={HomeDrawerNavigator} 
-        options={{ title: STRINGS.titles.home }} 
+        options={{ title: "Anasayfa" }} 
       />
       <Tab.Screen 
         name="CartTab" 
         component={CartScreen} 
         options={{ 
-          title: STRINGS.titles.cart,
+          title: "Sepet",
           tabBarBadge: cartCount>0?cartCount:undefined
         }} 
       />
