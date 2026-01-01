@@ -1,4 +1,4 @@
-# 📚 Kitap Dünyası (Book World) - Mobile E-Commerce App
+# 📚 ShopTemplate (Book World-Kitap Dünyası) - Mobile E-Commerce App
 
 A professional, full-featured mobile e-commerce application built with **React Native (Expo)**, **TypeScript**, and **Firebase**. This project demonstrates a complete shopping lifecycle, from seamless authentication to product discovery, cart management, and a verified review system.
 
